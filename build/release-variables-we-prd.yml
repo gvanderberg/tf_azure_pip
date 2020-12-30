@@ -1,0 +1,15 @@
+variables:
+  - name: public_ip_create
+    value: true
+  - name: public_ip_name
+    value: azpip-prd-we-titansoft-aks
+  - name: location
+    value: westeurope
+  - name: resource_group_create
+    value: false
+  - name: resource_group_name
+    value: azrg-prd-we-titansoft
+  - name: tags_environment
+    value: Production
+  - name: workspace_name
+    value: azure-pip-we-prd

@@ -1,0 +1,43 @@
+# input variables that need to be defined in the pipeline:
+## - managed-by
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+
+variables:
+  - name: tags_location
+    value: $(location)
+  - name: tags_managed_by
+    value: $(managed-by)
+  - name: terraform_version
+    value: 0.14.3
+
+stages:
+  - template: build-stage.yml
+    parameters:
+      displayName: package scripts
+      stageName: package
+      pathtoPublish: $(Build.SourcesDirectory)/src
+
+  - template: release-stage.yml
+    parameters:
+      condition: succeeded()
+      dependsOn: package
+      displayName: deploy dev
+      environment: development
+      stageName: deploy_dev
+      variableTemplate: release-variables-we-dev.yml
+
+  - template: release-stage.yml
+    parameters:
+      condition: succeeded()
+      dependsOn: deploy_dev
+      displayName: deploy prod
+      environment: production
+      stageName: deploy_prod
+      variableTemplate: release-variables-we-prd.yml

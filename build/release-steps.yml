@@ -1,0 +1,7 @@
+steps:
+  - bash: |
+      set -e
+
+      echo 'vault_uri = "$(vault_uri)"'
+    displayName: "terraform test"
+    name: "terraformTest"
