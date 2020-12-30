@@ -1,4 +1,5 @@
 variables:
+  - group: PreProd - Terraform CLI
   - name: public_ip_create
     value: true
   - name: public_ip_name
