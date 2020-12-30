@@ -41,8 +41,8 @@ stages:
         environment: ${{ parameters.environment }}
         variables:
           - template: ${{ parameters.variableTemplate }}
-          - name: vault_uri
-            value: $[ dependencies.provision.outputs['terraformApply.vault_uri'] ]
+          - name: ip_address
+            value: $[ dependencies.provision.outputs['terraformApply.ip_address'] ]
 
         strategy:
           runOnce:

@@ -2,6 +2,6 @@ steps:
   - bash: |
       set -e
 
-      echo 'vault_uri = "$(vault_uri)"'
+      echo 'ip_address = "$(ip_address)"'
     displayName: "terraform test"
     name: "terraformTest"

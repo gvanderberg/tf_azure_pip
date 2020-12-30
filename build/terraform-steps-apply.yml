@@ -20,28 +20,28 @@ steps:
       set -e
 
       echo 'hostname = "app.terraform.io"' | tee -a backend.tfvars
-      echo 'organization = "$(terraform_organization)"' | tee -a backend.tfvars
-      echo 'token = "$(terraform_token)"' | tee -a backend.tfvars
+      echo 'organization = "$(terraform-organization)"' | tee -a backend.tfvars
+      echo 'token = "$(terraform-token)"' | tee -a backend.tfvars
       echo 'workspaces { name = "$(workspace_name)" }' | tee -a backend.tfvars
 
       # terraform init
       terraform init -no-color -input=false -backend-config="backend.tfvars"
 
-      curl --location --request PATCH "https://app.terraform.io/api/v2/organizations/$(terraform_organization)/workspaces/$(workspace_name)" \
+      curl --location --request PATCH "https://app.terraform.io/api/v2/organizations/$(terraform-organization)/workspaces/$(workspace_name)" \
         --header "Content-Type: application/vnd.api+json" \
-        --header "Authorization: Bearer $(terraform_token)" \
+        --header "Authorization: Bearer $(terraform-token)" \
         --data-raw "{\"data\":{\"type\":\"workspaces\",\"attributes\":{\"operations\":false}}}"
 
       # terraform apply
       terraform apply -auto-approve -no-color -input=false
 
-      vault_uri=$(terraform output vault_uri)
-      echo "##vso[task.setvariable variable=vault_uri;isOutput=true]$vault_uri"
+      ip_address=$(terraform output ip_address)
+      echo "##vso[task.setvariable variable=ip_address;isOutput=true]$ip_address"
     displayName: terraform apply
     name: terraformApply
     env:
-      ARM_CLIENT_ID: $(terraform_client_id)
-      ARM_CLIENT_SECRET: $(terraform_client_secret)
-      ARM_SUBSCRIPTION_ID: $(terraform_subscription_id)
-      ARM_TENANT_ID: $(terraform_tenant_id)
+      ARM_CLIENT_ID: $(terraform-client-id)
+      ARM_CLIENT_SECRET: $(terraform-client-secret)
+      ARM_TENANT_ID: $(terraform-tenant-id)
+      ARM_SUBSCRIPTION_ID: $(terraform-subscription-id)
     workingDirectory: $(Pipeline.Workspace)/drop
